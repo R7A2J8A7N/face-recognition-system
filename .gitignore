@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.env/
+
+# Vector DB (local data)
+vector_db/
+chroma_faces/
+
+# Data (images should not go to GitHub)
+data/enroll/
+data/test/
+
+# OS / Editor
+.vscode/
+.DS_Store
+
+# Streamlit cache
+.streamlit/
