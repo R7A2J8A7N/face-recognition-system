@@ -1,47 +1,63 @@
-# app.py
+import argparse
+import time
+from pathlib import Path
+
 import cv2
-from src.detector import FaceDetector
-from src.quality import FaceQualityChecker
-from src.embedder import FaceEmbedder
-from src.database import FaceDatabase
-from src.matcher import FaceMatcher
-from src.visualizer import FaceVisualizer
-from src.utils import distance_to_confidence
+from tabulate import tabulate
 
-detector = FaceDetector()
-quality = FaceQualityChecker()
-embedder = FaceEmbedder()
-db = FaceDatabase()
-matcher = FaceMatcher()
-viz = FaceVisualizer()
+from src.core.face_engine import FaceEngine
+from src.utils.image_loader import load_image
+from src.utils.visualization import draw_results
 
 
-def recognize(image_path):
-    image = cv2.imread(image_path)
-    faces = detector.detect(image)
+def main():
 
-    for face in faces:
-        if not quality.is_valid(image, face):
-            continue
+    parser = argparse.ArgumentParser()
 
-        emb = embedder.get_embedding(face)
-        results = db.search(emb)
+    parser.add_argument("--mode", required=True,
+                        choices=["enroll", "recognize"])
 
-        user, score, decision = matcher.match(results)
+    parser.add_argument("--dataset")
+    parser.add_argument("--image")
 
-        if decision == "MATCH":
-            label = f"{user} ({(1-score)*100:.1f}%)"
-            color = (0, 255, 0)
+    args = parser.parse_args()
 
-        elif decision == "UNCERTAIN":
-            label = f"Uncertain ({(1-score)*100:.1f}%)"
-            color = (0, 255, 255)
+    engine = FaceEngine()
+
+    if args.mode == "enroll":
+
+        total = engine.enroll_dataset(args.dataset)
+
+        print(f"\n✅ Stored {total} embeddings.\n")
+
+    else:
+
+        image = load_image(args.image)
+
+        results = engine.recognize(image)
+
+        print(tabulate(results, headers="keys"))
+
+        # -----------------------------
+        # SAVE DEBUG IMAGE
+        # -----------------------------
+
+        if results:
+
+            output_dir = Path("output")
+            output_dir.mkdir(exist_ok=True)
+
+            output_image = draw_results(image, results)
+
+            filename = output_dir / f"match_{int(time.time())}.jpg"
+
+            cv2.imwrite(str(filename), output_image)
+
+            print(f"\n✅ Output saved -> {filename}\n")
 
         else:
-            label = "Unknown"
-            color = (0, 0, 255)
+            print("\nNo faces matched — nothing saved.\n")
 
 
-        viz.draw(image, face, label, color)
-
-    return image
+if __name__ == "__main__":
+    main()

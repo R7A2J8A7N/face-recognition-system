@@ -1,24 +1,60 @@
+# ------------------------------
 # Python
+# ------------------------------
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
+*.so
 
-# Virtual environment
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ------------------------------
+# Virtual Environment
+# ------------------------------
 venv/
-.env/
 
-# Vector DB (local data)
+# ------------------------------
+# Vector Database / Local Storage
+# ------------------------------
+
 vector_db/
-chroma_faces/
 
-# Data (images should not go to GitHub)
-data/enroll/
-data/test/
 
+# ------------------------------
+# Dataset & Test Images
+# (Never push biometric data)
+# ------------------------------
+dataset/
+test_images/
+
+# Debug output images
+output/
+
+# Logs
+logs/
+
+# ------------------------------
 # OS / Editor
+# ------------------------------
 .vscode/
-.DS_Store
 
-# Streamlit cache
+
+# ------------------------------
+# Streamlit / Cache
+# ------------------------------
 .streamlit/
+.cache/
+
+# ------------------------------
+# Jupyter (if used later)
+# ------------------------------
+.ipynb_checkpoints/
+
+# ------------------------------
+# Docker (optional local overrides)
+# ------------------------------
+docker-compose.override.yml
