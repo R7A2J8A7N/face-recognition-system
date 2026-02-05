@@ -145,12 +145,16 @@ Activate:
     venv\Scripts\activate
 
 ### enrollment 
+``` bash
 python app.py --mode inspect
+```
+``` bash
 python app.py --mode enroll --dataset dataset
+```
 ### Test 
-
+``` bash
 python app.py --mode recognize --image test_images/random_person.jpg
-
+```
 ## 2️⃣ Install Dependencies
 
 ``` bash
