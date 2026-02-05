@@ -216,7 +216,7 @@ Expected:
 
 Embeddings will be saved inside:
 
-    face_db/
+    vector_db/
 
 ------------------------------------------------------------------------
 
