@@ -15,7 +15,7 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--mode", required=True,
-                        choices=["enroll", "recognize"])
+                        choices=["enroll", "recognize","inspect"])
 
     parser.add_argument("--dataset")
     parser.add_argument("--image")
@@ -29,6 +29,12 @@ def main():
         total = engine.enroll_dataset(args.dataset)
 
         print(f"\n✅ Stored {total} embeddings.\n")
+    
+    elif args.mode == "inspect":
+        records = engine.list_embeddings()
+        
+        print(tabulate(records, headers="keys"))
+
 
     else:
 

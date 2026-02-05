@@ -145,6 +145,7 @@ Activate:
     venv\Scripts\activate
 
 ### enrollment 
+python app.py --mode inspect
 python app.py --mode enroll --dataset dataset
 ### Test 
 
@@ -227,6 +228,9 @@ Use images NOT present in the dataset.
 ``` bash
 python app.py --mode recognize --image test_images/test1.jpg
 ```
+## for api
+uvicorn src.api.main:app --reload
+
 
 Example output:
 
