@@ -233,8 +233,9 @@ Use images NOT present in the dataset.
 python app.py --mode recognize --image test_images/test1.jpg
 ```
 ## for api
+``` bash
 uvicorn src.api.main:app --reload
-
+```
 
 Example output:
 
