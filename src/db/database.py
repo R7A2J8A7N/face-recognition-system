@@ -112,3 +112,20 @@ class FaceDatabase:
         except Exception:
         # Never let deletion crash enrollment
             pass
+    
+    def user_exists(self, user_id: str) -> bool:
+        """
+        Fast existence check.
+
+    Avoids loading embeddings into memory.
+    O(1) lookup.
+    """
+
+        result = self.collection.get(
+        where={"user_id": user_id},
+        limit=1
+    )
+
+        ids = result.get("ids")
+
+        return bool(ids)

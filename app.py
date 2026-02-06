@@ -14,29 +14,73 @@ def main():
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--mode", required=True,
-                        choices=["enroll", "recognize","inspect"])
+    parser.add_argument(
+        "--mode",
+        required=True,
+        choices=["enroll", "recognize", "inspect"]
+    )
 
-    parser.add_argument("--dataset")
-    parser.add_argument("--image")
+    parser.add_argument(
+        "--dataset",
+        help="Path to dataset for batch enrollment"
+    )
+
+    parser.add_argument(
+        "--user_folder",
+        help="Path to a single user's folder for enrollment"
+    )
+
+    parser.add_argument(
+        "--image",
+        help="Image path for recognition"
+    )
 
     args = parser.parse_args()
 
     engine = FaceEngine()
 
+    # -------------------------------------------------
+    # ENROLL
+    # -------------------------------------------------
+
     if args.mode == "enroll":
 
-        total = engine.enroll_dataset(args.dataset)
+        if args.user_folder is not None:
+            report = engine.enroll_user(args.user_folder)
 
-        print(f"\n✅ Stored {total} embeddings.\n")
-    
+            print("\n✅ Single User Enrollment Report:\n")
+            print(report)
+
+        else:
+            if not args.dataset:
+                raise ValueError(
+                    "Provide either --dataset for batch "
+                    "or --user_folder for single enrollment."
+                )
+
+            report = engine.enroll_dataset(args.dataset)
+
+            print("\n✅ Batch Enrollment Report:\n")
+            print(report)
+
+    # -------------------------------------------------
+    # INSPECT DB
+    # -------------------------------------------------
+
     elif args.mode == "inspect":
+
         records = engine.list_embeddings()
-        
+
         print(tabulate(records, headers="keys"))
 
+    # -------------------------------------------------
+    # RECOGNIZE
+    # -------------------------------------------------
 
     else:
+
+        if not args.image:
+            raise ValueError("Provide --image for recognition.")
 
         image = load_image(args.image)
 

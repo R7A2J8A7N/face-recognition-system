@@ -235,8 +235,13 @@ python app.py --mode recognize --image test_images/test1.jpg
 ## for api
 ``` bash
 uvicorn src.api.main:app --reload
+<<<<<<< HEAD
 ```
 
+=======
+
+```
+>>>>>>> 262eb8b (docs: update README with enrollment commands and API usage)
 Example output:
 
     user_id    confidence    distance    decision

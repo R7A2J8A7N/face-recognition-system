@@ -34,6 +34,8 @@ class Settings(BaseSettings):
     # Matcher
     # -----------------------------
     MIN_EMBEDDINGS_PER_USER: int = 1
+    MAX_EMBEDDINGS_PER_USER: int = 10
+
     MATCH_THRESHOLD: float = 0.35
     UNCERTAIN_THRESHOLD: float = 0.45
     MIN_VOTES: int = 1
